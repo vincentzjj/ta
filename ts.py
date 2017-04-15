@@ -249,3 +249,4 @@ if __name__ == "__main__":
     ts.show()
 
 sys.exit(app.exec_())
+%pylab inline
