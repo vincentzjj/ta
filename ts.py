@@ -1,7 +1,7 @@
 import spidev
 import time
 import os
-from PyQt4 import QtCore, QtGui
+import sys
 # Open SPI bus
 spi = spidev.SpiDev()
 spi.open(0,0)
@@ -63,19 +63,13 @@ while True:
   # Read the temperature sensor data
   temp_level = ReadChannel(temp_channel)
   temp_volts = ConvertVolts(temp_level,2)
-  temp       = ConvertTemp(temp_level,2)
-
-  # Print out results
-  print "--------------------------------------------"  
-  print("Light : {} ({}V)".format(light_level,light_volts))  
-  print("Temp  : {} ({}V) {} deg C".format(temp_level,temp_volts,temp))    
+  temp       = ConvertTemp(temp_level,2)   
 
   # Wait before repeating loop
   time.sleep(delay)
   
-  
+from PyQt4 import QtCore, QtGui  
    try:
-
     _fromUtf8 = QtCore.QString.fromUtf8
 
 except AttributeError:
