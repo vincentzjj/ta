@@ -223,11 +223,11 @@ extern const uint8_t PROGMEM digital_pin_to_timer_PGM[];
 } // extern "C"
 #endif
 
-#ifdef __cplusplus
-#include "WCharacter.h"
-#include "WString.h"
-#include "HardwareSerial.h"
-#include "USBAPI.h"
+/*#ifdef __cplusplus
+//#include "WCharacter.h"
+//#include "WString.h"
+//#include "HardwareSerial.h"
+//#include "USBAPI.h"
 #if defined(HAVE_HWSERIAL0) && defined(HAVE_CDCSERIAL)
 #error "Targets with both UART0 and CDC serial not supported"
 #endif
@@ -251,6 +251,6 @@ long map(long, long, long, long, long);
 
 #endif
 
-#include "pins_arduino.h"
+#include "pins_arduino.h"*/
 
 #endif
