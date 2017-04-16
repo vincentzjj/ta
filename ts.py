@@ -69,7 +69,7 @@ while True:
   time.sleep(delay)
   
 from PyQt4 import QtCore, QtGui  
-   try:
+try:
     _fromUtf8 = QtCore.QString.fromUtf8
 
 except AttributeError:
