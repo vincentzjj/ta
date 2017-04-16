@@ -1,5 +1,5 @@
 #include "window.h"
-// #include "adcreader.h"
+#include "adc.h"
 
 #include <cmath>  // for sine stuff
 
