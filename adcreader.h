@@ -1,7 +1,18 @@
 #ifndef adcreader_h
 #define adcreader_h
 
-#include "Arduino.h"
+#include <unistd.h>
+#include <stdint.h>
+#include <string.h>
+#include <fcntl.h>
+#include <sys/ioctl.h>
+#include <linux/spi/spidev.h>
+#include <stdio.h>
+#include <errno.h>
+#include <stdlib.h>
+#include <string>
+#include <iostream>
+
 
 #include <QThread>
 
@@ -10,10 +21,19 @@ class ADCreader : public QThread
 class adcreader
 {
   public:
-    adcreader(int clockpin, int mosipin, int misopin, int cspin);
-    int readADC(int adcnum);
+    adcreader();
+    adcreader(std::string devspi, unsigned char spiMode, unsigned int spiSpeed, unsigned char spibitsPerWord);
+    adcreader();
+    int spiWriteRead( unsigned char *data, int length);
   private:
-      int _clockpin, _mosipin, _misopin, _cspin;
+      unsigned char mode;
+    unsigned char bitsPerWord;
+    unsigned int speed;
+    int spifd;
+     
+    int spiOpen(std::string devspi);
+int spiClose();
+
 };
 
 
