@@ -1,6 +1,3 @@
-#ifndef ADC_H
-#define ADC_H
-
 #define light_channel  0
 #define temp_channel  1
 #define delay 5
@@ -11,9 +8,9 @@
 #define misopin 21
 
 #include "Arduino.h"
-#include "MCP3008.h"
+#include "adcreader.h"
 
-MCP3008::MCP3008(int clockpin, int mosipin, int misopin, int cspin) {
+adcreader::adcreader(int clockpin, int mosipin, int misopin, int cspin) {
     
     // define SPI outputs and inputs for bitbanging
     
@@ -30,7 +27,7 @@ MCP3008::MCP3008(int clockpin, int mosipin, int misopin, int cspin) {
 }
 
 // read SPI data from MCP3008 chip, 8 possible adc's (0 thru 7)
-int MCP3008::readADC(int adcnum) {
+int adcreader::readADC(int adcnum) {
 
   if ((adcnum > 7) || (adcnum < 0)) return -1; // Wrong adc address return -1
 
@@ -102,7 +99,7 @@ float ConvertTemp(adcout,places)
 void main()
 {
     
-  MCP3008 adc(CLOCK_PIN, MOSI_PIN, MISO_PIN, CS_PIN);
+  adcreader adc(CLOCK_PIN, MOSI_PIN, MISO_PIN, CS_PIN);
 while (1)
  {
    //Read the light sensor data
@@ -117,7 +114,4 @@ while (1)
  
   // Wait before repeating loop
   time.sleep(delay);
-  }
-  }
-
-#endif
+ }
