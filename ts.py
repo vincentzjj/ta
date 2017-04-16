@@ -65,8 +65,6 @@ while True:
   temp_volts = ConvertVolts(temp_level,2)
   temp       = ConvertTemp(temp_level,2)   
 
-  # Wait before repeating loop
-  time.sleep(delay)
   
 from PyQt4 import QtCore, QtGui  
 try:
