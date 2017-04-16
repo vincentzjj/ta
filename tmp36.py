@@ -7,7 +7,7 @@ import datetime
 with open('./config.json') as config_file:
     plotly_user_config = json.load(config_file)
 
-py.sign_in(plotly_user_config["plotly_username"], plotly_user_config["plotly_api_key"])
+py.sign_in(plotly_user_config["zjiajun124"], plotly_user_config["XFojRosMS6fxH8IuCq9q"])
 
 url = py.plot([
     {
