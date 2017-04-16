@@ -1,3 +1,6 @@
+#ifndef ADC_H
+#define ADC_H
+
 #define light_channel  0
 #define temp_channel  1
 #define delay 5
@@ -120,3 +123,5 @@ while (1)
   time.sleep(delay);
   }
   }
+
+#endif
