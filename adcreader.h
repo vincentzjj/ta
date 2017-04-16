@@ -12,6 +12,10 @@
 
 #include "Arduino.h"
 
+#include <QThread>
+
+class ADCreader : public QThread
+
 class adcreader
 {
   public:
