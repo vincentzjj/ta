@@ -142,3 +142,51 @@ mcp3008Spi::~mcp3008Spi(){
 }
 
 
+
+ float ConvertVolts(adcout,places)
+ {
+   volts = (adcout * 3.3) / float(1023);
+  volts = round(volts,places);
+  return volts;
+ }
+  
+  /* ADC Value
+   (approx)  Temp  Volts
+     0      -50    0.00
+     78      -25    0.25
+    155        0    0.50
+    233       25    0.75
+    310       50    1.00
+    465      100    1.50
+    775      200    2.50
+   1023      280    3.30 */
+ 
+float ConvertTemp(adcout,places)
+ {
+  temp = ((adcout * 330)/float(1023))-50;
+  temp = round(temp,places);
+  return temp;
+ } 
+ 
+
+ 
+void main()
+{
+    
+  adcreader adc(CLOCK_PIN, MOSI_PIN, MISO_PIN, CS_PIN);
+while (1)
+ {
+   //Read the light sensor data
+  light_level = adc.readADC(light_channel);
+  light_volts = ConvertVolts(light_level,2);
+ 
+  // Read the temperature sensor data
+  temp_level = adc.readADC (temp_channel);
+  temp_volts = ConvertVolts(temp_level,2);
+  temp       = ConvertTemp(temp_level,2);
+ 
+ 
+  // Wait before repeating loop
+  time.sleep(delay);
+}
+
