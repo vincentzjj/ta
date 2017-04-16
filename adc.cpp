@@ -143,9 +143,9 @@ mcp3008Spi::~mcp3008Spi(){
 
 
 
- float ConvertVolts(adcout,places)
+ float ConvertVolts(retVal,places)
  {
-   volts = (adcout * 3.3) / float(1023);
+   volts = (retVal * 3.3) / float(1023);
   volts = round(volts,places);
   return volts;
  }
@@ -161,9 +161,9 @@ mcp3008Spi::~mcp3008Spi(){
     775      200    2.50
    1023      280    3.30 */
  
-float ConvertTemp(adcout,places)
+float ConvertTemp(retVal,places)
  {
-  temp = ((adcout * 330)/float(1023))-50;
+  temp = ((retVal * 330)/float(1023))-50;
   temp = round(temp,places);
   return temp;
  } 
@@ -172,8 +172,7 @@ float ConvertTemp(adcout,places)
  
 void main()
 {
-    
-  adcreader adc(CLOCK_PIN, MOSI_PIN, MISO_PIN, CS_PIN);
+  mcp3008Spi a2d("/dev/spidev0.0", SPI_MODE_0, 1000000, 8);  
 while (1)
  {
    //Read the light sensor data
