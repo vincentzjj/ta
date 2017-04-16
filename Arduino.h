@@ -23,10 +23,10 @@
 #include <math.h>
 
 //#include <avr/pgmspace.h>
-#include <avr/io.h>
-#include <avr/interrupt.h>
+//#include <avr/io.h>
+//#include <avr/interrupt.h>
 
-#include "binary.h"
+//#include "binary.h"
 
 #ifdef __cplusplus
 extern "C"{
