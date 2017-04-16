@@ -7,15 +7,15 @@
   http://learn.adafruit.com/send-raspberry-pi-data-to-cosm/python-script
 */
 
-#ifndef MCP3008_h
-#define MCP3008_h
+#ifndef adcreader_h
+#define adcreader_h
 
 #include "Arduino.h"
 
-class MCP3008
+class adcreader
 {
   public:
-    MCP3008(int clockpin, int mosipin, int misopin, int cspin);
+    adcreader(int clockpin, int mosipin, int misopin, int cspin);
     int readADC(int adcnum);
   private:
       int _clockpin, _mosipin, _misopin, _cspin;
