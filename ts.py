@@ -186,8 +186,6 @@ class Ui_ts(object):
 
         sensor = temp
 
-        t = float(sensor.readline()) / 1000
-
         alarm = float(self.sliderAlarm.value())
 
         # Display temperature
@@ -196,15 +194,15 @@ class Ui_ts(object):
 
         # Check whether the temperature is too high
 
-        if t <= alarm * 0.6:
+        if temp <= alarm * 0.6:
 
             self.lcdTemp.setStyleSheet("color: green")
 
-        elif t <= alarm * 0.8:
+        elif temp <= alarm * 0.8:
 
             self.lcdTemp.setStyleSheet("color: orange")
 
-        elif t <= alarm:
+        elif temp <= alarm:
 
             self.lcdTemp.setStyleSheet("color: red")
 
