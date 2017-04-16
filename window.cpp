@@ -69,7 +69,7 @@ Window::~Window() {
 
 void Window::timerEvent( QTimerEvent * )
 {
-	double inVal = gain * sin( M_PI * count/50.0 );
+	double inVal = temp;
 	++count;
 
 	// add the new input to the plot
@@ -82,10 +82,3 @@ void Window::timerEvent( QTimerEvent * )
 	thermo->setValue( inVal + 10 );
 }
 
-
-// this function can be used to change the gain of the A/D internal amplifier
-void Window::setGain(double gain)
-{
-	// for example purposes just change the amplitude of the generated input
-	this->gain = gain;
-}
