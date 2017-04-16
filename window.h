@@ -8,7 +8,7 @@
 
 #include <QBoxLayout>
 
-// #include "adcreader.h"
+#include "adcreader.h"
 
 // class definition 'Window'
 class Window : public QWidget
