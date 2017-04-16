@@ -2,6 +2,11 @@
 #define temp_channel  1
 #define delay 5
 
+#define cspin 24
+#define clockpin 23
+#define Mmosipin 19
+#define misopin 21
+
 #include "Arduino.h"
 #include "MCP3008.h"
 
@@ -93,14 +98,16 @@ float ConvertTemp(adcout,places)
  
 void main()
 {
+    
+  MCP3008 adc(CLOCK_PIN, MOSI_PIN, MISO_PIN, CS_PIN);
 while (1)
  {
    //Read the light sensor data
-  light_level = ReadChannel(light_channel);
+  light_level = adc.readADC(light_channel);
   light_volts = ConvertVolts(light_level,2);
  
   // Read the temperature sensor data
-  temp_level = ReadChannel(temp_channel);
+  temp_level = adc.readADC (temp_channel);
   temp_volts = ConvertVolts(temp_level,2);
   temp       = ConvertTemp(temp_level,2);
  
