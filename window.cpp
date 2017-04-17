@@ -1,5 +1,6 @@
 #include "window.h"
 #include "mcp3008Spi.h"
+#include "adcreader.h"
 
 #include <cmath>  // for sine stuff
 
