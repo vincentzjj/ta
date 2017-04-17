@@ -1,6 +1,6 @@
 #include "window.h"
 #include "mcp3008Spi.h"
-#include "adcreader.h"
+#include "ADCreader.h"
 
 #include <cmath>  // for sine stuff
 
@@ -21,13 +21,13 @@ Window::Window()
 	for( int index=0; index<plotDataSize; ++index )
 	{
 		xData[index] = index;
-		yData[index] = 0;
+		yData1[index] = 0;
 	}
 
 	curve = new QwtPlotCurve;
 	plot = new QwtPlot;
 	// make a plot curve from the data and attach it to the plot
-	curve->setSamples(xData, yData, plotDataSize);
+	curve->setSamples(xData, yData1, plotDataSize);
 	curve->attach(plot);
 
 	plot->replot();
@@ -50,33 +50,30 @@ Window::Window()
 	// At the moment it doesn't do anything else than
 	// running in an endless loop and which prints out "tick"
 	// every second.
-//	adcreader = new ADCreader();
-	tem.start();
+	adcreader = new ADCreader();
+	adcreader->start();
 }
 
 Window::~Window() {
 	// tells the thread to no longer run its endless loop
-//	adcreader->quit();
+	adcreader->quit();
 	// wait until the run method has terminated
-//	adcreader->wait();
-//	delete adcreader;
+	adcreader->wait();
+	delete adcreader;
 }
 void Window::timerEvent( QTimerEvent * )
 {
-        float result;
-	
-	result = tem.read();
-	double inVal = result;
+       float inVal1 = adcreader ->Data1();
 
-        memmove( yData, yData+1, (plotDataSize-1) * sizeof(double) );
+        memmove( yData, yData1+1, (plotDataSize-1) * sizeof(double) );
 
-        yData[plotDataSize-1] = inVal;
+        yData1[plotDataSize-1] = inVal;
 
-        curve->setSamples(xData, yData, plotDataSize);
+        curve->setSamples(xData, yData1, plotDataSize);
 
         plot->replot();
         
-        thermo->setValue( inVal );
+        thermo->setValue( inVal1 );
 
 } 
 
