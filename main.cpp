@@ -1,6 +1,6 @@
 #include "window.h"
 #include "mcp3008Spi.h"
-
+#include "ADCreader.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
