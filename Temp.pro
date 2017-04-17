@@ -11,6 +11,6 @@ TARGET = Temp
 greaterThan(QT_MAJOR_VERSION, 4): LIBS += -lqwt-qt5 -lm
 lessThan(QT_MAJOR_VERSION, 5): LIBS += -lqwt -lm
 
-HEADERS += window.h mcp3008spi.h
+HEADERS += window.h mcp3008Spi.h
 
-SOURCES += main.cpp window.cpp mcp3008spi.cpp adcreader.cpp
+SOURCES += main.cpp window.cpp mcp3008Spi.cpp adcreader.cpp
