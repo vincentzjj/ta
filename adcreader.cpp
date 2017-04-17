@@ -94,11 +94,11 @@ while (1)
    float light_volts,temp_volts,temp;
      
    //Read the light sensor data
-  light_level = readadc(light_channel);
+  light_level = run(light_channel);
   light_volts = ConvertVolts(light_level);
  
   // Read the temperature sensor data
-  temp_level = readadc(temp_channel);
+  temp_level = run(temp_channel);
   temp_volts = ConvertVolts(temp_level);
   temp       = ConvertTemp(temp_level);}
  
