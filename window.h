@@ -9,7 +9,7 @@
 #include <QBoxLayout>
 
 #include "mcp3008Spi.h"
-#include "adcreader.h"
+#include "ADCreader.h"
 // class definition 'Window'
 class Window : public QWidget
 {
