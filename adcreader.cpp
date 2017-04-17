@@ -84,11 +84,11 @@ float ConvertTemp(int adcout)
  
 float read()
 {
-    
+  float temp;  
 while (1)
  {int light_channel=0;
    int temp_channel=1;
-  int delay=2;
+  
    int light_level,temp_level;
    float light_volts,temp_volts,temp;
      
