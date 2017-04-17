@@ -23,7 +23,7 @@
  
 using namespace std;
 
-int readadc(int Channel)
+int ADCreader::run(int Channel)
 {
     mcp3008Spi a2d("/dev/spidev0.0", SPI_MODE_0, 1000000, 8);
     int i = 20;
@@ -48,12 +48,12 @@ int readadc(int Channel)
     return a2dval ;
 }    
 
-  float round(float number)
+  float ADCreader::round(float number)
 {
     return (number > 0.0) ? (number + 0.5) : (number - 0.5); 
 }
 
- float ConvertVolts(int adcout)
+ float ADCreader::ConvertVolts(int adcout)
  {
     float volts; 
    volts = (adcout * 3.3) / float(1023);
@@ -72,7 +72,7 @@ int readadc(int Channel)
     775      200    2.50
    1023      280    3.30 */
  
-float ConvertTemp(int adcout)
+float ADCreader::ConvertTemp(int adcout)
  {
    float temp;  
   temp = ((adcout * 330)/float(1023))-50;
@@ -82,7 +82,7 @@ float ConvertTemp(int adcout)
  
 
  
-float read()
+float ADCreader::read()
 {
   float temp;  
 while (1)
