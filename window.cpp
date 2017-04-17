@@ -65,9 +65,9 @@ void Window::timerEvent( QTimerEvent * )
 {
        float inVal1 = adcreader ->Data1();
 
-        memmove( yData, yData1+1, (plotDataSize-1) * sizeof(double) );
+        memmove( yData1, yData1+1, (plotDataSize-1) * sizeof(double) );
 
-        yData1[plotDataSize-1] = inVal;
+        yData1[plotDataSize-1] = inVal1;
 
         curve->setSamples(xData, yData1, plotDataSize);
 
