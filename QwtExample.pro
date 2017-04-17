@@ -11,6 +11,6 @@ TARGET = QwtExample
 greaterThan(QT_MAJOR_VERSION, 4): LIBS += -lqwt-qt5 -lm
 lessThan(QT_MAJOR_VERSION, 5): LIBS += -lqwt -lm
 
-HEADERS += window.h adcreader.h Arduino.h
+HEADERS += window.h adcreader.h
 
 SOURCES += main.cpp window.cpp adcreader.cpp
