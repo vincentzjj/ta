@@ -93,7 +93,7 @@ while (1)
   light_volts = ConvertVolts(light_level,2);
  
   // Read the temperature sensor data
-  temp_level = readadc (temp_channel);
+  temp_level = readadc(temp_channel);
   temp_volts = ConvertVolts(temp_level,2);
   temp       = ConvertTemp(temp_level,2);
  
