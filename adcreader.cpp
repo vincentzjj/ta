@@ -47,12 +47,17 @@ int readadc(int Channel)
     }
     return a2dval ;
 }    
-  
- float ConvertVolts(int adcout,int places)
+
+  float round(float number)
+{
+    return (number > 0.0) ? (number + 0.5) : (number - 0.5); 
+}
+
+ float ConvertVolts(int adcout)
  {
     float volts; 
    volts = (adcout * 3.3) / float(1023);
-  volts = round(volts,places);
+  volts = round(volts);
   return volts;
  }
   
@@ -67,11 +72,11 @@ int readadc(int Channel)
     775      200    2.50
    1023      280    3.30 */
  
-float ConvertTemp(int adcout,int places)
+float ConvertTemp(int adcout)
  {
    float temp;  
   temp = ((adcout * 330)/float(1023))-50;
-  temp = round(temp,places);
+  temp = round(temp);
   return temp;
  } 
  
@@ -85,19 +90,21 @@ while (1)
      
    int light_channel=0;
    int temp_channel=1;
+  int delay=2;
    int light_level,temp_level;
    float light_volts,temp_volts,temp;
      
    //Read the light sensor data
   light_level = readadc(light_channel);
-  light_volts = ConvertVolts(light_level,2);
+  light_volts = ConvertVolts(light_level);
  
   // Read the temperature sensor data
   temp_level = readadc(temp_channel);
-  temp_volts = ConvertVolts(temp_level,2);
-  temp       = ConvertTemp(temp_level,2);
+  temp_volts = ConvertVolts(temp_level);
+  temp       = ConvertTemp(temp_level);
  
  
   // Wait before repeating loop
   time.sleep(delay);
  }
+}
