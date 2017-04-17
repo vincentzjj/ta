@@ -63,8 +63,10 @@ while True:
   print("Light: {} ({}V)".format(light_level,light_volts))
   print("Temp : {} ({}V) {} deg C".format(temp_level,temp_volts,temp))
   
-  if temp>36:  
+  if temp>23:  
        print("warning!")
+  else:
+       print("temprature is ok")
       
  
   # Wait before repeating loop
