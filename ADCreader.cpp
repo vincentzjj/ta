@@ -40,11 +40,11 @@ mcp3008Spi a2d("/dev/spidev0.0", SPI_MODE_0, 1000000, 8);
     while(running)
     {
         data0[0] = 1;  //  first byte transmitted -> start bit
-        data0[1] = 0b10000000 |( ((Channel0 & 7) << 4)); // second byte transmitted -> (SGL/DIF = 1, D2=D1=D0=0)
+        data0[1] = 0b10000000 |( ((a2dChannel0 & 7) << 4)); // second byte transmitted -> (SGL/DIF = 1, D2=D1=D0=0)
         data0[2] = 0; // third byte transmitted....don't care
      
         data1[0] = 1;  //  first byte transmitted -> start bit
-        data1[1] = 0b10010000 |( ((Channel1 & 7) << 4)); // second byte transmitted -> (SGL/DIF = 1, D2=D1=D0=0)
+        data1[1] = 0b10010000 |( ((a2dChannel1 & 7) << 4)); // second byte transmitted -> (SGL/DIF = 1, D2=D1=D0=0)
         data1[2] = 0; // third byte transmitted....don't care
  
         a2d.spiWriteRead(data0, sizeof(data0) );
