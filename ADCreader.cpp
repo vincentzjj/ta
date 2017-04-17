@@ -25,13 +25,14 @@
 using namespace std;
 mcp3008Spi a2d("/dev/spidev0.0", SPI_MODE_0, 1000000, 8);
     
-     int a2dval0 = 0;
+     int a2dVal0 = 0;
      int a2dChannel0 = 0;
         unsigned char data0[3];
      float voltage0 = 0;
-     int a2dval1 = 0;
+
+     int a2dVal1 = 0;
      int a2dChannel1 = 0;
-        unsigned char data0[3];
+        unsigned char data1[3];
      float voltage1 = 0;
    void ADCreader::run()
    {
@@ -48,9 +49,9 @@ mcp3008Spi a2d("/dev/spidev0.0", SPI_MODE_0, 1000000, 8);
  
         a2d.spiWriteRead(data0, sizeof(data0) );
  
-        a2dval0 = 0;
-        a2dval0 = (data0[1]<< 8) & 0b1100000000; //merge data[1] & data[2] to get result
-        a2dval0 |=  (data0[2] & 0xff);
+        a2dVal0 = 0;
+        a2dVal0 = (data0[1]<< 8) & 0b1100000000; //merge data[1] & data[2] to get result
+        a2dVal0 |=  (data0[2] & 0xff);
         voltage0 = (a2dVal0*3.3)/float(1023);
       
      a2d.spiWriteRead(data1, sizeof(data1) );
@@ -58,7 +59,7 @@ mcp3008Spi a2d("/dev/spidev0.0", SPI_MODE_0, 1000000, 8);
         a2dval1 = 0;
         a2dval1 = (data1[1]<< 8) & 0b1100000000; //merge data[1] & data[2] to get result
         a2dval1 |=  (data1[2] & 0xff);
-        voltage1 =((a2dVal1*3.3)/float(1023))*1000;
+        voltage1 =((a2dVal1*330)/float(1023))-50;
        
     }
     
@@ -68,7 +69,7 @@ mcp3008Spi a2d("/dev/spidev0.0", SPI_MODE_0, 1000000, 8);
  float ADCreader::Data0()
  {
      
-   output0 = (voltage * 3.3) / float(1023);
+   output0 = voltage0;
 
   return output0;
  }
@@ -86,7 +87,7 @@ mcp3008Spi a2d("/dev/spidev0.0", SPI_MODE_0, 1000000, 8);
  
 float ADCreader::Data1()
  {
-  output1 = ((voltage1 * 330)/float(1023))-50;
+  output1 = voltage1;
   return output1;
  } 
  
