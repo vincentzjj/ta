@@ -13,7 +13,7 @@ Window::Window()
 	// set up the thermometer
 	thermo = new QwtThermo; 
 	thermo->setFillBrush( QBrush(Qt::red) );
-	//thermo->setRange(0, 20);
+	thermo->setRange(0, 50);
 	thermo->show();
 
 
