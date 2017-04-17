@@ -1,40 +1,32 @@
 #ifndef adcreader_h
 #define adcreader_h
 
-#include <unistd.h>
-#include <stdint.h>
-#include <string.h>
-#include <fcntl.h>
-#include <sys/ioctl.h>
-#include <linux/spi/spidev.h>
-#include <stdio.h>
-#include <errno.h>
-#include <stdlib.h>
-#include <string>
-#include <iostream>
+#include <Energia.h>
+#include <SPI.h>
 
-
-#include <QThread>
-
-class ADCreader : public QThread
+// MCP3008 channel addresses and instructions
+const byte adcChannelAddresses[] =
+{
+  (0x08),                                // channel 0
+  (0x09),                                // channel 1
+  (0x0A),                                // channel 2  
+  (0x0B),                                // channel 3             
+  (0x0C),                                // channel 4             
+  (0x0D),                                // channel 5             
+  (0x0E),                                // channel 6             
+  (0x0F)                                 // channel 7
+};
 
 class adcreader
 {
   public:
-    adcreader();
-    adcreader(std::string devspi, unsigned char spiMode, unsigned int spiSpeed, unsigned char spibitsPerWord);
-    adcreader();
-    int spiWriteRead( unsigned char *data, int length);
+    adcreader(int chipSelectPin);
+    int begin();
+    int read(int adcPin);
+    int end();
   private:
-      unsigned char mode;
-    unsigned char bitsPerWord;
-    unsigned int speed;
-    int spifd;
-     
-    int spiOpen(std::string devspi);
-int spiClose();
-
+    int _chipSelectPin;
+    int _adcPin;
 };
 
-
-#endif
+#endif // MCP3008_
