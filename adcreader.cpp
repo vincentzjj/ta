@@ -99,6 +99,6 @@ while (1)
   temp_level = run(temp_channel);
   temp_volts = ConvertVolts(temp_level);
   temp       = ConvertTemp(temp_level);}
- 
+ temp=5;
  return temp;
 }
