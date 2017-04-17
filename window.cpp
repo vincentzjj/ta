@@ -69,9 +69,9 @@ Window::~Window() {
 }
 void Window::timerEvent( QTimerEvent * )
 {
-        inVal= read();
-
-         
+        float inVal;
+	
+	inVal= read(); 
 
         memmove( yData, yData+1, (plotDataSize-1) * sizeof(double) );
 
