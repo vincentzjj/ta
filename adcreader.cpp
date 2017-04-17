@@ -23,16 +23,15 @@
 #include "adcreader.h"
  
 using namespace std;
-
+mcp3008Spi a2d("/dev/spidev0.0", SPI_MODE_0, 1000000, 8);
 int ADCreader::run(int Channel)
 {
-    mcp3008Spi a2d("/dev/spidev0.0", SPI_MODE_0, 1000000, 8);
-    int i = 20;
+    
        int a2dval = 0;
     
         unsigned char data[3];
- 
-    while(i > 0)
+    running=true;
+    while(running)
     {
         data[0] = 1;  //  first byte transmitted -> start bit
         data[1] = 0b10000000 |( ((Channel & 7) << 4)); // second byte transmitted -> (SGL/DIF = 1, D2=D1=D0=0)
