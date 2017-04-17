@@ -1,5 +1,4 @@
-import wx
-  
+import wx 
 def main():
   app = wx.App()
   win = wx.Frame(None,title='NotePad',size=(440,320))
