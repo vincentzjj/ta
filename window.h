@@ -40,11 +40,14 @@ private:
 
 	// data arrays for the plot
 	double xData[plotDataSize];
-	double yData[plotDataSize];
+	double yData0[plotDataSize];
+	double yData1[plotDataSize];
 
-	int count;
-
-	ADCreader tem;
+	
+int normtemp;
+        int moistlev;
+ADCreader *adcreader;
+	
 };
 
 #endif // WINDOW_H
