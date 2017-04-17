@@ -8,9 +8,14 @@ class ADCreader : public QThread
 public:
 	ADCreader() {running = 0;};
 	void quit();
-	void run();
+	int run(int Channel);
+	float round(float number);
+	float ConvertVolts(int adcout);
+	float ConvertTemp(int adcout);
+	
 private:
 	bool running;
+	float read();
 
 };
 
