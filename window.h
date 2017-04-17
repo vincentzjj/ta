@@ -44,7 +44,7 @@ private:
 
 	int count;
 
-//	ADCreader *adcreader;
+	ADCreader tem;
 };
 
 #endif // WINDOW_H
