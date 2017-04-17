@@ -82,7 +82,7 @@ float ConvertTemp(int adcout)
  
 
  
-void main()
+float read()
 {
     
 while (1)
@@ -107,4 +107,5 @@ while (1)
   // Wait before repeating loop
   time.sleep(delay);
  }
+ return temp;
 }
