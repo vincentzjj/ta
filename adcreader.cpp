@@ -86,9 +86,7 @@ float read()
 {
     
 while (1)
- {
-     
-   int light_channel=0;
+ {int light_channel=0;
    int temp_channel=1;
   int delay=2;
    int light_level,temp_level;
@@ -103,9 +101,8 @@ while (1)
   temp_volts = ConvertVolts(temp_level);
   temp       = ConvertTemp(temp_level);
  
- 
   // Wait before repeating loop
-  time.sleep(delay);
- }
+  time.sleep(delay);}
+ 
  return temp;
 }
