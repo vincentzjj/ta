@@ -41,7 +41,7 @@ light_channel = 0
 temp_channel  = 1
  
 # Define delay between readings
-delay = 3
+delay = 2
 
 # Define temprature warning limit
 limit = 23
