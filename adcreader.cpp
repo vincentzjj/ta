@@ -99,10 +99,7 @@ while (1)
   // Read the temperature sensor data
   temp_level = readadc(temp_channel);
   temp_volts = ConvertVolts(temp_level);
-  temp       = ConvertTemp(temp_level);
- 
-  // Wait before repeating loop
-  time.sleep(delay);}
+  temp       = ConvertTemp(temp_level);}
  
  return temp;
 }
