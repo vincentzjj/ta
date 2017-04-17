@@ -3,6 +3,7 @@
 
 #include <cmath>  // for sine stuff
 
+extern float read();
 
 Window::Window() : gain(5), count(0)
 {
@@ -68,23 +69,9 @@ Window::~Window() {
 }
 void Window::timerEvent( QTimerEvent * )
 {
-        
+        inVal= read();
 
-         int fd =-1;
-
-         char *temp;
-
-         float value;
-
-        fd = open(path,O_RDONLY);
-        read(fd,buf,sizeof(buf));
-        temp = strchr(buf,'t');
-
-        sscanf(temp,"t=%s",temp);
-
-        value = atof(temp)/1000;
-
-        double inVal=(gain/50) * value;
+         
 
         memmove( yData, yData+1, (plotDataSize-1) * sizeof(double) );
 
