@@ -5,15 +5,9 @@
 
 extern float read();
 
-Window::Window() : gain(5), count(0)
+Window::Window() : 
 {
-	knob = new QwtKnob;
-	// set up the gain knob
-	knob->setValue(gain);
 
-	// use the Qt signals/slots framework to update the gain -
-	// every time the knob is moved, the setGain function will be called
-	connect( knob, SIGNAL(valueChanged(double)), SLOT(setGain(double)) );
 
 	// set up the thermometer
 	thermo = new QwtThermo; 
