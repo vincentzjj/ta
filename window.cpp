@@ -51,7 +51,7 @@ Window::Window()
 	// running in an endless loop and which prints out "tick"
 	// every second.
 //	adcreader = new ADCreader();
-//	adcreader->start();
+	tem.start();
 }
 
 Window::~Window() {
