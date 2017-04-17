@@ -43,7 +43,6 @@ int ADCreader::run(int Channel)
                 a2dval = (data[1]<< 8) & 0b1100000000; //merge data[1] & data[2] to get result
                 a2dval |=  (data[2] & 0xff);
         sleep(1);
-        i--;
     }
     return a2dval ;
 }    
