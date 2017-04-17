@@ -1,191 +1,62 @@
-#include "mcp3008Spi.h"
-using namespace std;
-/**********************************************************
- * spiOpen() :function is called by the constructor.
- * It is responsible for opening the spidev device
- * "devspi" and then setting up the spidev interface.
- * private member variables are used to configure spidev.
- * They must be set appropriately by constructor before calling
- * this function.
- * *********************************************************/
-int mcp3008Spi::spiOpen(std::string devspi){
-    int statusVal = -1;
-    this->spifd = open(devspi.c_str(), O_RDWR);
-    if(this->spifd < 0){
-        perror("could not open SPI device");
-        exit(1);
-    }
- 
-    statusVal = ioctl (this->spifd, SPI_IOC_WR_MODE, &(this->mode));
-    if(statusVal < 0){
-        perror("Could not set SPIMode (WR)...ioctl fail");
-        exit(1);
-    }
- 
-    statusVal = ioctl (this->spifd, SPI_IOC_RD_MODE, &(this->mode));
-    if(statusVal < 0) {
-      perror("Could not set SPIMode (RD)...ioctl fail");
-      exit(1);
-    }
- 
-    statusVal = ioctl (this->spifd, SPI_IOC_WR_BITS_PER_WORD, &(this->bitsPerWord));
-    if(statusVal < 0) {
-      perror("Could not set SPI bitsPerWord (WR)...ioctl fail");
-      exit(1);
-    }
- 
-    statusVal = ioctl (this->spifd, SPI_IOC_RD_BITS_PER_WORD, &(this->bitsPerWord));
-    if(statusVal < 0) {
-      perror("Could not set SPI bitsPerWord(RD)...ioctl fail");
-      exit(1);
-    }  
- 
-    statusVal = ioctl (this->spifd, SPI_IOC_WR_MAX_SPEED_HZ, &(this->speed));    
-    if(statusVal < 0) {
-      perror("Could not set SPI speed (WR)...ioctl fail");
-      exit(1);
-    }
- 
-    statusVal = ioctl (this->spifd, SPI_IOC_RD_MAX_SPEED_HZ, &(this->speed));    
-    if(statusVal < 0) {
-      perror("Could not set SPI speed (RD)...ioctl fail");
-      exit(1);
-    }
-    return statusVal;
-}
- 
-/***********************************************************
- * spiClose(): Responsible for closing the spidev interface.
- * Called in destructor
- * *********************************************************/
- 
-int mcp3008Spi::spiClose(){
-    int statusVal = -1;
-    statusVal = close(this->spifd);
-        if(statusVal < 0) {
-      perror("Could not close SPI device");
-      exit(1);
-    }
-    return statusVal;
-}
- 
-/********************************************************************
- * This function writes data "data" of length "length" to the spidev
- * device. Data shifted in from the spidev device is saved back into
- * "data".
- * ******************************************************************/
-int mcp3008Spi::spiWriteRead( unsigned char *data, int length){
- 
-  struct spi_ioc_transfer spi[length];
-  int i = 0;
-  int retVal = -1; 
-  bzero(spi, sizeof spi); // ioctl struct must be zeroed 
- 
-// one spi transfer for each byte
- 
-  for (i = 0 ; i < length ; i++){
- 
-    spi[i].tx_buf        = (unsigned long)(data + i); // transmit from "data"
-    spi[i].rx_buf        = (unsigned long)(data + i) ; // receive into "data"
-    spi[i].len           = sizeof(*(data + i)) ;
-    spi[i].delay_usecs   = 0 ;
-    spi[i].speed_hz      = this->speed ;
-    spi[i].bits_per_word = this->bitsPerWord ;
-    spi[i].cs_change = 0;
-}
- 
- retVal = ioctl (this->spifd, SPI_IOC_MESSAGE(length), &spi) ;
- 
- if(retVal < 0){
-    perror("Problem transmitting spi data..ioctl");
-    exit(1);
- }
- 
-return retVal;
- 
-}
- 
-/*************************************************
- * Default constructor. Set member variables to
- * default values and then call spiOpen()
- * ***********************************************/
- 
-mcp3008Spi::mcp3008Spi(){
-    this->mode = SPI_MODE_0 ;
-    this->bitsPerWord = 8;
-    this->speed = 1000000;
-    this->spifd = -1;
- 
-    this->spiOpen(std::string("/dev/spidev0.0"));
- 
-    }
- 
-/*************************************************
- * overloaded constructor. let user set member variables to
- * and then call spiOpen()
- * ***********************************************/
-mcp3008Spi::mcp3008Spi(std::string devspi, unsigned char spiMode, unsigned int spiSpeed, unsigned char spibitsPerWord){
-    this->mode = spiMode ;
-    this->bitsPerWord = spibitsPerWord;
-    this->speed = spiSpeed;
-    this->spifd = -1;
- 
-    this->spiOpen(devspi);
- 
-}
- 
-/**********************************************
- * Destructor: calls spiClose()
- * ********************************************/
-mcp3008Spi::~mcp3008Spi(){
-    this->spiClose();
-}
+#include <Energia.h>
+#include <SPI.h>
+#include "adcreader.h"
 
-
-
- float ConvertVolts(retVal,places)
- {
-   volts = (retVal * 3.3) / float(1023);
-  volts = round(volts,places);
-  return volts;
- }
-  
-  /* ADC Value
-   (approx)  Temp  Volts
-     0      -50    0.00
-     78      -25    0.25
-    155        0    0.50
-    233       25    0.75
-    310       50    1.00
-    465      100    1.50
-    775      200    2.50
-   1023      280    3.30 */
- 
-float ConvertTemp(retVal,places)
- {
-  temp = ((retVal * 330)/float(1023))-50;
-  temp = round(temp,places);
-  return temp;
- } 
- 
-
- 
-void main()
+// Instantiate with the chip select pin as an argument
+// ----------------------------------------------------------------------------------------------
+adcreader::adcreader(int chipSelectPin)
 {
-  mcp3008Spi a2d("/dev/spidev0.0", SPI_MODE_0, 1000000, 8);  
-while (1)
- {
-   //Read the light sensor data
-  light_level = adc.readADC(light_channel);
-  light_volts = ConvertVolts(light_level,2);
- 
-  // Read the temperature sensor data
-  temp_level = adc.readADC (temp_channel);
-  temp_volts = ConvertVolts(temp_level,2);
-  temp       = ConvertTemp(temp_level,2);
- 
- 
-  // Wait before repeating loop
-  time.sleep(delay);
+  _chipSelectPin = chipSelectPin;
 }
 
+// Call once to initialize
+// ----------------------------------------------------------------------------------------------
+int MCP3008::begin()
+{
+  SPI.setClockDivider(SPI_CLOCK_DIV8 );             // slow the SPI bus down
+  SPI.setBitOrder(MSBFIRST);
+  SPI.setDataMode(SPI_MODE0);   
+  SPI.begin();
+  pinMode(_chipSelectPin, OUTPUT);
+  digitalWrite(_chipSelectPin, LOW);                // Cycle the ADC CS pin on start per datasheet
+  digitalWrite(_chipSelectPin, HIGH);
+  return 0;
+}
+
+// Call whenever an analog to digital conversion is required with the pin number on the MCP3008
+// as an argument.  Returns the integer digital value (10 bit value between 0 and 1023).
+// ----------------------------------------------------------------------------------------------
+int adcreader::read(int adcPin)
+{
+  _adcPin = adcPin;
+  if ((_adcPin < 1) || (_adcPin > 8))                 // check for invalid pins
+  {
+    return -1;                                      // invalid pin
+  }
+  
+  // The corresponding channel is one less than the pin number and the MCP3008 address and instructions
+  // are stored in the array adcChannelAddresses
+  byte channelAddress = adcChannelAddresses[_adcPin - 1]; 
+  
+  int adcValue = 0;
+  byte MSB = 0x00; 
+  byte LSB = 0x00;
+  byte doNotCare = 0x00;                            // "don't care" byte
+  
+  digitalWrite(_chipSelectPin, LOW);
+  SPI.transfer(0x01);                               // start Bit
+  MSB = SPI.transfer(channelAddress << 4);          // send channel address/instruction and receive MSB,
+  MSB = MSB & 0x03;                                 // mask the MSB to two bits
+  LSB = SPI.transfer(doNotCare);                    // Send don't care and receive LSB byte in return
+  digitalWrite(_chipSelectPin, HIGH); 
+
+  return MSB << 8 | LSB;                            // Combine bytes and return 10 bit ADC value
+}
+
+// Call to bring SPI to an end.  Call MCP.begin() to start it up again.
+// ----------------------------------------------------------------------------------------------
+int adcreader::end()
+{
+  SPI.end();
+  return 0;
+}
