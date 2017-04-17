@@ -5,7 +5,7 @@
 
 extern float read();
 
-Window::Window() : 
+Window::Window() 
 {
 
 
