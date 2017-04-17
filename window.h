@@ -23,8 +23,7 @@ public:
 
 	void timerEvent( QTimerEvent * );
 
-public slots:
-	void setGain(double gain);
+
 
 // internal variables for the window class
 private:
@@ -43,7 +42,6 @@ private:
 	double xData[plotDataSize];
 	double yData[plotDataSize];
 
-	double gain;
 	int count;
 
 //	ADCreader *adcreader;
