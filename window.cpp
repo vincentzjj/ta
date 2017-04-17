@@ -1,5 +1,5 @@
 #include "window.h"
-#include "adcreader.h"
+#include "mcp3008spi.h"
 
 #include <cmath>  // for sine stuff
 
@@ -25,7 +25,7 @@ Window::Window() : gain(5), count(0)
 	for( int index=0; index<plotDataSize; ++index )
 	{
 		xData[index] = index;
-		yData[index] = temp;
+		yData[index] = 0;
 	}
 
 	curve = new QwtPlotCurve;
@@ -66,19 +66,38 @@ Window::~Window() {
 //	adcreader->wait();
 //	delete adcreader;
 }
-
 void Window::timerEvent( QTimerEvent * )
 {
-	double inVal = temp;
-	++count;
+         char path[100] = "/sys/bus/w1/devices/28-0416c0917bff/w1_slave";
 
-	// add the new input to the plot
-	memmove( yData, yData+1, (plotDataSize-1) * sizeof(double) );
-	yData[plotDataSize-1] = inVal;
-	curve->setSamples(xData, yData, plotDataSize);
-	plot->replot();
+         char buf[100];
 
-	// set the thermometer value
-	thermo->setValue( inVal + 10 );
-}
+         int fd =-1;
+
+         char *temp;
+
+         float value;
+
+        fd = open(path,O_RDONLY);
+        read(fd,buf,sizeof(buf));
+        temp = strchr(buf,'t');
+
+        sscanf(temp,"t=%s",temp);
+
+        value = atof(temp)/1000;
+
+        double inVal=(gain/50) * value;
+
+        memmove( yData, yData+1, (plotDataSize-1) * sizeof(double) );
+
+        yData[plotDataSize-1] = inVal;
+
+        curve->setSamples(xData, yData, plotDataSize);
+
+        plot->replot();
+        
+        thermo->setValue( inVal );
+
+} 
+
 
