@@ -1,4 +1,6 @@
-#include <window.h>
+#include "window.h"
+#include "mcp3008Spi.h"
+#include "adcreader.h"
 
 #include <QApplication>
 
