@@ -12,10 +12,10 @@ public:
 	float round(float number);
 	float ConvertVolts(int adcout);
 	float ConvertTemp(int adcout);
-	
+	float read();
 private:
 	bool running;
-	float read();
+	
 
 };
 
