@@ -1,76 +1,56 @@
-#define light_channel  0
-#define temp_channel  1
-#define delay 5
-
-#define cspin 24
-#define clockpin 23
-#define Mmosipin 19
-#define misopin 21
-
-#include "Arduino.h"
-#include "adcreader.h"
-
-adcreader::adcreader(int clockpin, int mosipin, int misopin, int cspin) {
-    
-    // define SPI outputs and inputs for bitbanging
-    
-    _cspin = cspin;
-    _clockpin = clockpin;
-    _mosipin = mosipin;
-    _misopin = misopin;
-    
-    pinMode(_cspin, OUTPUT);
-    pinMode(_clockpin, OUTPUT);
-    pinMode(_mosipin, OUTPUT);
-    pinMode(_misopin, INPUT);
-    
-}
-
-// read SPI data from MCP3008 chip, 8 possible adc's (0 thru 7)
-int adcreader::readADC(int adcnum) {
-
-  if ((adcnum > 7) || (adcnum < 0)) return -1; // Wrong adc address return -1
-
-  // algo
-  digitalWrite(_cspin, HIGH);
-
-  digitalWrite(_clockpin, LOW); //  # start clock low
-  digitalWrite(_cspin, LOW); //     # bring CS low
-
-  int commandout = adcnum;
-  commandout |= 0x18; //  # start bit + single-ended bit
-  commandout <<= 3; //    # we only need to send 5 bits here
+/***********************************************************************
+ * mcp3008SpiTest.cpp. Sample program that tests the mcp3008Spi class.
+ * an mcp3008Spi class object (a2d) is created. the a2d object is instantiated
+ * using the overloaded constructor. which opens the spidev0.0 device with
+ * SPI_MODE_0 (MODE 0) (defined in linux/spi/spidev.h), speed = 1MHz &
+ * bitsPerWord=8.
+ *
+ * call the spiWriteRead function on the a2d object 20 times. Each time make sure
+ * that conversion is configured for single ended conversion on CH0
+ * i.e. transmit ->  byte1 = 0b00000001 (start bit)
+ *                   byte2 = 0b1000000  (SGL/DIF = 1, D2=D1=D0=0)
+ *                   byte3 = 0b00000000  (Don't care)
+ *      receive  ->  byte1 = junk
+ *                   byte2 = junk + b8 + b9
+ *                   byte3 = b7 - b0
+ *    
+ * after conversion must merge data[1] and data[2] to get final result
+ *
+ *
+ *
+ * *********************************************************************/
+#include "mcp3008Spi.h"
  
-  for (int i=0; i<5; i++) {
-    if (commandout & 0x80) 
-      digitalWrite(_mosipin, HIGH);
-    else   
-      digitalWrite(_mosipin, LOW);
-      
-    commandout <<= 1;
-    digitalWrite(_clockpin, HIGH);
-    digitalWrite(_clockpin, LOW);
+using namespace std;
 
-  }
-
-  int adcout = 0;
-  // read in one empty bit, one null bit and 10 ADC bits
-  for (int i=0; i<12; i++) {
-    digitalWrite(_clockpin, HIGH);
-    digitalWrite(_clockpin, LOW);
-    adcout <<= 1;
-    if (digitalRead(_misopin))
-      adcout |= 0x1;
-  } 
-  digitalWrite(_cspin, HIGH);
-
-  adcout >>= 1; //      # first bit is 'null' so drop it
-  return adcout;
-}
-
-
- float ConvertVolts(adcout,places)
+int readadc(int Channel)
+{
+    mcp3008Spi a2d("/dev/spidev0.0", SPI_MODE_0, 1000000, 8);
+    int i = 20;
+       int a2dval = 0;
+    
+        unsigned char data[3];
+ 
+    while(i > 0)
+    {
+        data[0] = 1;  //  first byte transmitted -> start bit
+        data[1] = 0b10000000 |( ((Channel & 7) << 4)); // second byte transmitted -> (SGL/DIF = 1, D2=D1=D0=0)
+        data[2] = 0; // third byte transmitted....don't care
+ 
+        a2d.spiWriteRead(data, sizeof(data) );
+ 
+        a2dval = 0;
+                a2dval = (data[1]<< 8) & 0b1100000000; //merge data[1] & data[2] to get result
+                a2dval |=  (data[2] & 0xff);
+        sleep(1);
+        i--;
+    }
+    return a2dval ;
+}    
+  
+ float ConvertVolts(int adcout,int places)
  {
+    float volts; 
    volts = (adcout * 3.3) / float(1023);
   volts = round(volts,places);
   return volts;
@@ -87,8 +67,9 @@ int adcreader::readADC(int adcnum) {
     775      200    2.50
    1023      280    3.30 */
  
-float ConvertTemp(adcout,places)
+float ConvertTemp(int adcout,int places)
  {
+   float temp;  
   temp = ((adcout * 330)/float(1023))-50;
   temp = round(temp,places);
   return temp;
@@ -99,15 +80,20 @@ float ConvertTemp(adcout,places)
 void main()
 {
     
-  adcreader adc(CLOCK_PIN, MOSI_PIN, MISO_PIN, CS_PIN);
 while (1)
  {
+     
+   int light_channel=0;
+   int temp_channel=1;
+   int light_level,temp_level;
+   float light_volts,temp_volts,temp;
+     
    //Read the light sensor data
-  light_level = adc.readADC(light_channel);
+  light_level = readadc(light_channel);
   light_volts = ConvertVolts(light_level,2);
  
   // Read the temperature sensor data
-  temp_level = adc.readADC (temp_channel);
+  temp_level = readadc (temp_channel);
   temp_volts = ConvertVolts(temp_level,2);
   temp       = ConvertTemp(temp_level,2);
  
