@@ -64,7 +64,7 @@ void Window::timerEvent( QTimerEvent * )
 {
         float result;
 	
-	result = read();
+	result = 5;
 	double inVal = result;
 
         memmove( yData, yData+1, (plotDataSize-1) * sizeof(double) );
