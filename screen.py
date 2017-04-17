@@ -1,19 +1,15 @@
-import wx 
-def main():
-  app = wx.App()
-  win = wx.Frame(None,title='NotePad',size=(440,320))
-  
-  
-  bt_open = wx.Button(win,label='open',pos=(275,2),size=(80,30))
-  bt_save = wx.Button(win,label='save',pos=(355,2),size=(80,30))
-
-  
-  text_title = wx.TextCtrl(win,pos=(5,2),size=(265,30))
-  text_content = wx.TextCtrl(win,pos=(5,34),size=(430,276),style=wx.TE_MULTILINE|wx.HSCROLL)
-
-  
-  win.Show()
-  app.MainLoop()
-  
-if __name__ == '__main__':
-  main()
+#!C:\Python27\python.exe
+ 2 # -*- coding:UTF-8 -*-
+ 3 
+ 4 import Tkinter
+ 5 
+ 6 def center_window(w = 300, h = 200):
+ 7     ws = root.winfo_screenwidth()
+ 8     hs = root.winfo_screenheight()
+ 9     x = (ws/2) - (w/2)
+10     y = (hs/2) - (h/2)
+11     root.geometry("%dx%d+%d+%d" % (w, h, x, y))
+12 
+13 root = Tkinter.Tk(className='python gui')
+14 center_window(500, 300)
+15 root.mainloop()
