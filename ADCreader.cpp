@@ -20,7 +20,7 @@
  *
  * *********************************************************************/
 #include "mcp3008Spi.h"
-#include "adcreader.h"
+#include "ADCreader.h"
  
 using namespace std;
 mcp3008Spi a2d("/dev/spidev0.0", SPI_MODE_0, 1000000, 8);
