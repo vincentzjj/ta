@@ -20,7 +20,7 @@
  *
  * *********************************************************************/
 #include "mcp3008Spi.h"
-#include "ADCreader.h"
+#include "adcreader.h"
  
 using namespace std;
 
