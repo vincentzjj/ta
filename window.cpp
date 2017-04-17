@@ -68,9 +68,7 @@ Window::~Window() {
 }
 void Window::timerEvent( QTimerEvent * )
 {
-         char path[100] = "/sys/bus/w1/devices/28-0416c0917bff/w1_slave";
-
-         char buf[100];
+        
 
          int fd =-1;
 
