@@ -1,5 +1,5 @@
 #include "window.h"
-#include "mcp3008spi.h"
+#include "mcp3008Spi.h"
 
 #include <cmath>  // for sine stuff
 
