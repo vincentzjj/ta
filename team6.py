@@ -42,7 +42,10 @@ temp_channel  = 1
  
 # Define delay between readings
 delay = 3
- 
+
+# Define temprature warning limit
+limit = 23
+
 while True:
  
   # Read the light sensor
@@ -59,7 +62,7 @@ while True:
   print("Light: {} ({}V)".format(light_level,light_volts))
   print("Temp : {} ({}V) {} deg C".format(temp_level,temp_volts,temp))
   
-  if temp>23:  
+  if temp>limit:  
        print("warning!")
   else:
        print("temprature is ok")
