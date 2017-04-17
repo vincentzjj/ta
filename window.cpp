@@ -35,7 +35,6 @@ Window::Window()
 
 	// set up the layout - knob above thermometer
 	vLayout = new QVBoxLayout;
-	vLayout->addWidget(knob);
 	vLayout->addWidget(thermo);
 
 	// plot to the left of knob and thermometer
@@ -63,11 +62,12 @@ Window::~Window() {
 }
 void Window::timerEvent( QTimerEvent * )
 {
-        float inVal;
+        float result;
 	
-	inVal= read(); 
+	result = read();
+	double inVal = result;
 
-        memmove( yData, yData+1, (plotDataSize-1) * sizeof(float) );
+        memmove( yData, yData+1, (plotDataSize-1) * sizeof(double) );
 
         yData[plotDataSize-1] = inVal;
 
